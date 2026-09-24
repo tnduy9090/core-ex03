@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1" />
+
+    <title>@ViewData["Title"] - Admin</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="~/admin/css/bootstrap.min.css" />
+
+    <!-- MetisMenu -->
+    <link rel="stylesheet"
+          href="~/admin/css/metisMenu.min.css" />
+
+    <!-- Startmin CSS -->
+    <link rel="stylesheet"
+          href="~/admin/css/startmin.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="~/admin/css/font-awesome.min.css" />
+
+    @RenderSection("Styles", required: false)
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Header -->
+        <partial name="_HeaderPartial" />
+
+        <!-- Sidebar -->
+        <partial name="_SidebarPartial" />
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                @RenderBody()
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- jQuery -->
+    <script src="~/admin/js/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="~/admin/js/bootstrap.min.js"></script>
+
+    <!-- MetisMenu -->
+    <script src="~/admin/js/metisMenu.min.js"></script>
+
+    <!-- Startmin -->
+    <script src="~/admin/js/startmin.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+
+</html>
