@@ -9,16 +9,16 @@ namespace ex03.Areas.Admin.Controllers
         {
             return View();
         }
-        public IActionResult Tables()
+        public IActionResult DanhMuc()
         {
             return View();
         }
-        public IActionResult Product()
+        public IActionResult SanPham()
         {
             return View();
         }
 
-        public IActionResult User()
+        public IActionResult Login()
         {
             return View();
         }
