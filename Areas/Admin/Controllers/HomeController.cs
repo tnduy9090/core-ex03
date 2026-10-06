@@ -22,10 +22,5 @@ namespace ex03.Areas.Admin.Controllers
         {
             return View();
         }
-
-        public IActionResult Order()
-        {
-            return View();
-        }
     }
 }
