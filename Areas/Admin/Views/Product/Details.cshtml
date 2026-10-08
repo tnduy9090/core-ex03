@@ -1,0 +1,80 @@
+﻿@model ex03.Models.Product
+
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm";
+}
+
+<div class="container-fluid">
+
+    <h2>Chi tiết sản phẩm</h2>
+
+    <hr />
+
+    <div class="row">
+
+        <div class="col-md-4">
+
+            @if (!string.IsNullOrEmpty(Model.Image))
+            {
+                <img src="@Model.Image"
+                     class="img-responsive img-thumbnail"
+                     style="width:100%; max-height:350px; object-fit:cover;" />
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    Sản phẩm chưa có ảnh.
+                </div>
+            }
+
+        </div>
+
+        <div class="col-md-8">
+
+            <h3>@Model.Name</h3>
+
+            <p>
+                <strong>ID:</strong>
+                @Model.Id
+            </p>
+
+            <p>
+                <strong>Giá:</strong>
+                <span class="text-danger">
+                    @Model.Price.ToString("N0") VNĐ
+                </span>
+            </p>
+
+            <p>
+                <strong>Số lượng:</strong>
+                @Model.Quantity
+            </p>
+
+            <p>
+                <strong>Danh mục:</strong>
+                @(Model.Category?.Name ?? "Chưa có")
+            </p>
+
+            <p>
+                <strong>Mô tả:</strong>
+                @Model.Description
+            </p>
+
+            <br />
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-warning">
+                Sửa
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-default">
+                Quay lại
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

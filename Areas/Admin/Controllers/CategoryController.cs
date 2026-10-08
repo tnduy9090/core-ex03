@@ -15,103 +15,194 @@ namespace ex03.Areas.Admin.Controllers
             _context = context;
         }
 
-        // 1. DANH SÁCH DANH MỤC
-        public async Task Index()
+        // =========================================
+        // 1. DANH SÁCH
+        // =========================================
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
             var categories = await _context.Categories
                 .Include(c => c.Products)
+                .OrderBy(c => c.Id)
                 .ToListAsync();
+
             return View(categories);
         }
 
-        // 2. THÊM MỚI DANH MỤC
+        // =========================================
+        // 2. CHI TIẾT
+        // =========================================
+        [HttpGet]
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var category = await _context.Categories
+                .Include(c => c.Products)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
+        }
+
+        // =========================================
+        // 3. THÊM - GET
+        // =========================================
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
+        // =========================================
+        // 4. THÊM - POST
+        // =========================================
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task Create(Category category)
+        public async Task<IActionResult> Create(Category category)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
+                _context.Categories.Add(category);
+
                 await _context.SaveChangesAsync();
+
+                TempData["Success"] = "Thêm danh mục thành công!";
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(category);
         }
 
-        // 3. CHỈNH SỬA DANH MỤC
-        public async Task Edit(int? id)
+        // =========================================
+        // 5. SỬA - GET
+        // =========================================
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null) return NotFound();
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null) return NotFound();
+            var category = await _context.Categories
+                .FindAsync(id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
 
             return View(category);
         }
 
+        // =========================================
+        // 6. SỬA - POST
+        // =========================================
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task Edit(int id, Category category)
+        public async Task<IActionResult> Edit(
+            int id,
+            Category category)
         {
-            if (id != category.Id) return NotFound();
+            if (id != category.Id)
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(category);
+                    _context.Categories.Update(category);
+
                     await _context.SaveChangesAsync();
+
+                    TempData["Success"] =
+                        "Cập nhật danh mục thành công!";
+
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!_context.Categories.Any(e => e.Id == category.Id))
+                    bool exists = await _context.Categories
+                        .AnyAsync(c => c.Id == category.Id);
+
+                    if (!exists)
+                    {
                         return NotFound();
-                    else
-                        throw;
+                    }
+
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
+
             return View(category);
         }
 
-        // 4. XÓA DANH MỤC
-        public async Task Delete(int? id)
+        // =========================================
+        // 7. XÓA - GET
+        // =========================================
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null) return NotFound();
+            if (id == null)
+            {
+                return NotFound();
+            }
 
             var category = await _context.Categories
                 .Include(c => c.Products)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == id);
 
-            if (category == null) return NotFound();
+            if (category == null)
+            {
+                return NotFound();
+            }
 
             return View(category);
         }
 
+        // =========================================
+        // 8. XÓA - POST
+        // =========================================
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var category = await _context.Categories
                 .Include(c => c.Products)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            if (category != null)
+            if (category == null)
             {
-                if (category.Products != null && category.Products.Any())
-                {
-                    ModelState.AddModelError(string.Empty, "Không thể xóa danh mục này vì đang có sản phẩm thuộc danh mục!");
-                    return View("Delete", category);
-                }
-
-                _context.Categories.Remove(category);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
+
+            // Không cho xóa nếu đang có sản phẩm
+            if (category.Products != null &&
+                category.Products.Any())
+            {
+                TempData["Error"] =
+                    "Không thể xóa danh mục vì đang có sản phẩm thuộc danh mục này!";
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            _context.Categories.Remove(category);
+
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] =
+                "Xóa danh mục thành công!";
 
             return RedirectToAction(nameof(Index));
         }

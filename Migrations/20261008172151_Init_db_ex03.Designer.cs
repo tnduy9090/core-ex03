@@ -11,8 +11,8 @@ using ex03.Data;
 namespace ex03.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261005092247_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20261008172151_Init_db_ex03")]
+    partial class Init_db_ex03
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

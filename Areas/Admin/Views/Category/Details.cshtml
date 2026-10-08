@@ -1,0 +1,126 @@
+﻿@model ex03.Models.Category
+
+@{
+    ViewData["Title"] = "Chi tiết danh mục";
+}
+
+<div class="container-fluid">
+
+    <h1 class="page-header">
+        Chi tiết danh mục
+    </h1>
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+            Thông tin danh mục
+        </div>
+
+        <div class="panel-body">
+
+            <dl class="dl-horizontal">
+
+                <dt>
+                    ID
+                </dt>
+
+                <dd>
+                    @Model.Id
+                </dd>
+
+                <dt>
+                    Tên danh mục
+                </dt>
+
+                <dd>
+                    @Model.Name
+                </dd>
+
+                <dt>
+                    Số sản phẩm
+                </dt>
+
+                <dd>
+                    @(Model.Products?.Count ?? 0)
+                </dd>
+
+            </dl>
+
+            <hr />
+
+            <h4>
+                Danh sách sản phẩm thuộc danh mục
+            </h4>
+
+            @if (Model.Products != null &&
+                 Model.Products.Any())
+            {
+                <table class="table table-bordered">
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var product in Model.Products)
+                        {
+                            <tr>
+
+                                <td>
+                                    @product.Id
+                                </td>
+
+                                <td>
+                                    @product.Name
+                                </td>
+
+                                <td>
+                                    @product.Price.ToString("N0") VNĐ
+                                </td>
+
+                                <td>
+                                    @product.Quantity
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    Danh mục này chưa có sản phẩm.
+                </div>
+            }
+
+            <br />
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-warning">
+
+                Sửa
+
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-default">
+
+                Quay lại
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

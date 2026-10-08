@@ -1,0 +1,213 @@
+﻿@model IEnumerable<ex03.Models.Product>
+
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                Quản lý sản phẩm
+            </h1>
+        </div>
+    </div>
+
+    <!-- Nút thêm sản phẩm -->
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-lg-12">
+
+            <a asp-area="Admin"
+               asp-controller="Product"
+               asp-action="Create"
+               class="btn btn-primary">
+                <i class="fa fa-plus"></i>
+                Thêm sản phẩm
+            </a>
+
+        </div>
+    </div>
+
+    <!-- Danh sách sản phẩm -->
+    <div class="row">
+
+        <div class="col-lg-12">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    <strong>Danh sách sản phẩm</strong>
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered table-hover">
+
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Ảnh</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Danh mục</th>
+                                    <th>Mô tả</th>
+                                    <th style="width: 220px;">
+                                        Chức năng
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @if (Model != null && Model.Any())
+                                {
+                                    foreach (var product in Model)
+                                    {
+                                        <tr>
+
+                                            <!-- ID -->
+                                            <td>
+                                                @product.Id
+                                            </td>
+
+                                            <!-- Ảnh -->
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(product.Image))
+                                                {
+                                                    <img src="@product.Image"
+                                                         alt="@product.Name"
+                                                         style="width:80px;height:80px;object-fit:cover;"
+                                                         class="img-thumbnail" />
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">
+                                                        Không có ảnh
+                                                    </span>
+                                                }
+                                            </td>
+
+                                            <!-- Tên -->
+                                            <td>
+                                                <strong>
+                                                    @product.Name
+                                                </strong>
+                                            </td>
+
+                                            <!-- Giá -->
+                                            <td>
+                                                <span class="text-danger">
+                                                    @product.Price.ToString("N0") VNĐ
+                                                </span>
+                                            </td>
+
+                                            <!-- Số lượng -->
+                                            <td>
+                                                @product.Quantity
+                                            </td>
+
+                                            <!-- Danh mục -->
+                                            <td>
+                                                @(product.Category?.Name ?? "Chưa có danh mục")
+                                            </td>
+
+                                            <!-- Mô tả -->
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(product.Description))
+                                                {
+                                                    if (product.Description.Length > 50)
+                                                    {
+                                                        @product.Description.Substring(0, 50)
+
+                                                        <span>...</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        @product.Description
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">
+                                                        Không có mô tả
+                                                    </span>
+                                                }
+                                            </td>
+
+                                            <!-- Chức năng -->
+                                            <td>
+
+                                                <!-- Chi tiết -->
+                                                <a asp-area="Admin"
+                                                   asp-controller="Product"
+                                                   asp-action="Details"
+                                                   asp-route-id="@product.Id"
+                                                   class="btn btn-info btn-sm">
+                                                    <i class="fa fa-eye"></i>
+                                                    Xem
+                                                </a>
+
+                                                <!-- Sửa -->
+                                                <a asp-area="Admin"
+                                                   asp-controller="Product"
+                                                   asp-action="Edit"
+                                                   asp-route-id="@product.Id"
+                                                   class="btn btn-warning btn-sm">
+                                                    <i class="fa fa-edit"></i>
+                                                    Sửa
+                                                </a>
+
+                                                <!-- Xóa -->
+                                                <a asp-area="Admin"
+                                                   asp-controller="Product"
+                                                   asp-action="Delete"
+                                                   asp-route-id="@product.Id"
+                                                   class="btn btn-danger btn-sm">
+                                                    <i class="fa fa-trash"></i>
+                                                    Xóa
+                                                </a>
+
+                                            </td>
+
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="8"
+                                            class="text-center">
+
+                                            <strong>
+                                                Chưa có sản phẩm nào.
+                                            </strong>
+
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

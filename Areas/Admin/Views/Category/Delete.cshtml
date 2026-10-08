@@ -1,0 +1,112 @@
+﻿@model ex03.Models.Category
+
+@{
+    ViewData["Title"] = "Xóa danh mục";
+}
+
+<div class="container-fluid">
+
+    <h1 class="page-header">
+        Xóa danh mục
+    </h1>
+
+    <div class="alert alert-danger">
+
+        <strong>
+            Bạn có chắc chắn muốn xóa danh mục này?
+        </strong>
+
+    </div>
+
+    <div class="panel panel-default">
+
+        <div class="panel-body">
+
+            <dl class="dl-horizontal">
+
+                <dt>
+                    ID
+                </dt>
+
+                <dd>
+                    @Model.Id
+                </dd>
+
+                <dt>
+                    Tên danh mục
+                </dt>
+
+                <dd>
+                    @Model.Name
+                </dd>
+
+                <dt>
+                    Số sản phẩm
+                </dt>
+
+                <dd>
+                    @(Model.Products?.Count ?? 0)
+                </dd>
+
+            </dl>
+
+            @if (Model.Products != null &&
+                 Model.Products.Any())
+            {
+                <div class="alert alert-warning">
+
+                    <strong>Không thể xóa!</strong>
+
+                    <br />
+
+                    Danh mục này đang có
+                    <strong>@Model.Products.Count</strong>
+                    sản phẩm.
+
+                    <br />
+
+                    Bạn phải xóa hoặc chuyển các sản phẩm
+                    sang danh mục khác trước.
+
+                </div>
+
+                <a asp-action="Index"
+                   class="btn btn-default">
+
+                    Quay lại
+
+                </a>
+            }
+            else
+            {
+                <form asp-action="Delete"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden"
+                           asp-for="Id" />
+
+                    <button type="submit"
+                            class="btn btn-danger">
+
+                        <i class="fa fa-trash"></i>
+                        Xác nhận xóa
+
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-default">
+
+                        Hủy
+
+                    </a>
+
+                </form>
+            }
+
+        </div>
+
+    </div>
+
+</div>
