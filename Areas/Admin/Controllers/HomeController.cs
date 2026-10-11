@@ -3,7 +3,7 @@
 namespace ex03.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class HomeController : Controller
+    public class HomeController : AdminBaseController
     {
         public IActionResult Index()
         {

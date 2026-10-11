@@ -6,7 +6,7 @@ using ex03.Models;
 namespace ex03.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class CategoryController : AdminBaseController
     {
         private readonly ApplicationDbContext _context;
 

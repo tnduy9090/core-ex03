@@ -21,10 +21,30 @@ namespace ex03.Areas.Admin.Controllers
         }
 
         // 1. DANH SÁCH SẢN PHẨM
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(int? categoryId)
         {
-            var products = await _context.Products
+            // Lấy danh sách danh mục để hiển thị bộ lọc
+            ViewBag.Categories = await _context.Categories
+                .OrderBy(c => c.Name)
+                .ToListAsync();
+
+            // Truy vấn sản phẩm
+            var query = _context.Products
                 .Include(p => p.Category)
+                .AsQueryable();
+
+            // Nếu người dùng chọn danh mục thì lọc
+            if (categoryId.HasValue)
+            {
+                query = query.Where(p => p.CategoryId == categoryId.Value);
+            }
+
+            // Giữ lại danh mục đang chọn
+            ViewBag.SelectedCategoryId = categoryId;
+
+            var products = await query
+                .OrderBy(p => p.Id)
                 .ToListAsync();
 
             return View(products);
