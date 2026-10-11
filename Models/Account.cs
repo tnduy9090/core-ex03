@@ -14,5 +14,7 @@ namespace ex03.Models
 
         [Required(ErrorMessage = "Mật khẩu không được để trống")]
         public string Password { get; set; } = string.Empty;
+
+        public string Role { get; set; } = "User";
     }
 }

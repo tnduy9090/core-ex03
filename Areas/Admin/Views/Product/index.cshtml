@@ -35,50 +35,7 @@
         </div>
     </div>
 
-    <form asp-area="Admin"
-          asp-controller="Product"
-          asp-action="Index"
-          method="get"
-          class="form-inline"
-          style="margin-bottom:20px;">
-
-        <label for="categoryId">Lọc theo danh mục: </label>
-
-        <select id="categoryId"
-                name="categoryId"
-                class="form-control">
-
-            <option value="">Tất cả danh mục</option>
-
-            @foreach (Category category in ViewBag.Categories)
-            {
-                if (ViewBag.SelectedCategoryId != null &&
-                    (int)ViewBag.SelectedCategoryId == category.Id)
-                {
-                    <option value="@category.Id" selected>
-                        @category.Name
-                    </option>
-                }
-                else
-                {
-                    <option value="@category.Id">
-                        @category.Name
-                    </option>
-                }
-            }
-        </select>
-
-        <button type="submit" class="btn btn-primary">
-            Lọc sản phẩm
-        </button>
-
-        <a asp-area="Admin"
-           asp-controller="Product"
-           asp-action="Index"
-           class="btn btn-default">
-            Bỏ lọc
-        </a>
-    </form>
+    
 
     <!-- Danh sách sản phẩm -->
     <div class="row">

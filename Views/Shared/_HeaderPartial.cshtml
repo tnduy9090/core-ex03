@@ -52,8 +52,48 @@
                             <div class="header-right-side-menu ml-15">
                                 <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
                             </div>
-                            <div>
-                                <a asp-action="Login">Dang Nhap</a>
+                            <div class="d-flex align-items-center ml-3">
+
+                                @if (User.Identity?.IsAuthenticated == true)
+                                {
+                                    <span class="mr-2">
+                                        Xin chào, @User.Identity.Name
+                                    </span>
+
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a asp-area="Admin"
+                                           asp-controller="Product"
+                                           asp-action="Index"
+                                           class="btn btn-sm btn-primary mr-2">
+                                            Quản trị
+                                        </a>
+                                    }
+
+                                    <form asp-area=""
+                                          asp-controller="Account"
+                                          asp-action="Logout"
+                                          method="post"
+                                          class="d-inline">
+
+                                        @Html.AntiForgeryToken()
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-danger">
+                                            Đăng xuất
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <a asp-area=""
+                                       asp-controller="Account"
+                                       asp-action="Login"
+                                       class="btn btn-sm btn-primary">
+                                        Đăng nhập
+                                    </a>
+                                }
+
                             </div>
                         </div>
                     </div>
